@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ruskin Bond Notice Board</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ===== SCREEN 1: Welcome ===== -->
+  <div id="welcomeScreen" class="screen active">
+    <div class="welcome-inner">
+      <img src="student_doodle.jpeg" alt="doodle mascot"
+        style="width:170px;height:auto;filter:invert(1) contrast(1.6) brightness(1.15);mix-blend-mode:screen;margin-bottom:6px;">
+      <div class="wordmark">RUSKIN BOND · CLASS 5</div>
+      <h1>Everything your<br>class needs, in one place</h1>
+      <p>Homework, announcements, and activities — all in one friendly little notice board.</p>
+      <button onclick="showRoleSelect()">Let's go →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 2: Teacher or Student choice ===== -->
+  <div id="roleSelectScreen" class="screen">
+    <div class="welcome-inner">
+      <div class="badge">CLASS 5 · RUSKIN BOND</div>
+      <h1>Who's this?</h1>
+      <p>Choose how you'd like to continue.</p>
+      <button class="role-row" onclick="showTeacher()">
+        <span class="emoji">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#EE6C5B" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="20" cy="10" r="6" />
+            <path d="M8,10 Q6,6 10,5" />
+            <line x1="20" y1="16" x2="20" y2="28" />
+            <line x1="20" y1="18" x2="12" y2="24" />
+            <line x1="20" y1="18" x2="28" y2="14" />
+            <line x1="20" y1="28" x2="14" y2="36" />
+            <line x1="20" y1="28" x2="26" y2="36" />
+            <rect x="25" y="11" width="7" height="9" rx="1" />
+          </svg>
+        </span>
+        <span>
+          <div class="label">I'm a Teacher</div>
+          <div class="sub">Post homework & announcements</div>
+        </span>
+      </button>
+      <button class="role-row" onclick="showStudent()">
+        <span class="emoji">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#EE6C5B" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="20" cy="10" r="6" />
+            <path d="M14,7 Q20,2 26,7" />
+            <line x1="20" y1="16" x2="20" y2="28" />
+            <line x1="20" y1="18" x2="12" y2="22" />
+            <line x1="20" y1="18" x2="28" y2="22" />
+            <line x1="20" y1="28" x2="14" y2="36" />
+            <line x1="20" y1="28" x2="26" y2="36" />
+            <rect x="14" y="17" width="12" height="11" rx="3" />
+          </svg>
+        </span>
+        <span>
+          <div class="label">I'm a Student</div>
+          <div class="sub">View updates, submit letters</div>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 3: Teacher code entry ===== -->
+  <div id="teacherScreen" class="screen">
+    <button class="back-fixed" onclick="showRoleSelect()">← Back</button>
+    <div class="screen-stack">
+      <div class="card-title">Teacher sign-in</div>
+      <div class="card">
+        <div class="badge" style="display:inline-flex;align-items:center;gap:6px;">
+          <svg viewBox="0 0 40 40" width="16" height="16" fill="none" stroke="#EE6C5B" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="20" cy="10" r="6" />
+            <path d="M8,10 Q6,6 10,5" />
+            <line x1="20" y1="16" x2="20" y2="28" />
+            <line x1="20" y1="18" x2="12" y2="24" />
+            <line x1="20" y1="18" x2="28" y2="14" />
+            <line x1="20" y1="28" x2="14" y2="36" />
+            <line x1="20" y1="28" x2="26" y2="36" />
+            <rect x="25" y="11" width="7" height="9" rx="1" />
+          </svg>
+          TEACHER
+        </div>
+        <h1>Enter your code</h1>
+        <p>The 9-character class + subject code you were given.</p>
+        <input type="text" id="teacherCodeInput" placeholder="e.g. SCSCRBEVS" maxlength="9">
+        <button class="primary" onclick="continueAsTeacher()">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 4: Student code entry  ===== -->
+  <div id="studentScreen" class="screen">
+    <button class="back-fixed" onclick="showRoleSelect()">← Back</button>
+    <div class="screen-stack">
+      <div class="card-title">Student sign-in</div>
+      <div class="card">
+        <div class="badge" style="display:inline-flex;align-items:center;gap:6px;">
+          <svg viewBox="0 0 40 40" width="16" height="16" fill="none" stroke="#EE6C5B" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="20" cy="10" r="6" />
+            <path d="M14,7 Q20,2 26,7" />
+            <line x1="20" y1="16" x2="20" y2="28" />
+            <line x1="20" y1="18" x2="12" y2="22" />
+            <line x1="20" y1="18" x2="28" y2="22" />
+            <line x1="20" y1="28" x2="14" y2="36" />
+            <line x1="20" y1="28" x2="26" y2="36" />
+            <rect x="14" y="17" width="12" height="11" rx="3" />
+          </svg>
+          STUDENT
+        </div>
+        <h1>Enter your code</h1>
+        <p>The 9-character code your teacher gave you — class code + your roll number.</p>
+        <input type="text" id="studentCodeInput" placeholder="e.g. SCSCRB001" maxlength="9">
+        <button class="primary" onclick="continueAsStudent()">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+
+</body>
+
+</html>

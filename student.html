@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Dashboard — Ruskin Bond Class 5</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== MENU: what does the student want to do? ===== -->
+  <div id="studentMenu" class="screen active">
+    <div class="screen-stack">
+      <div class="topbar"><span class="title" id="studentTitle">Loading...</span></div>
+      <div class="card">
+        <h1>What would you like to do?</h1>
+        <button class="role-row" onclick="showStudentScreen('studentFeedScreen')">
+            <span class="emoji">
+            <svg viewBox="0 0 40 40" fill="none" stroke="#EE6C5B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="8" width="24" height="26" rx="3"/>
+              <rect x="15" y="5" width="10" height="6" rx="2" fill="#FBEAE6"/>
+              <line x1="13" y1="18" x2="27" y2="18"/>
+              <line x1="13" y1="23" x2="27" y2="23"/>
+              <line x1="13" y1="28" x2="21" y2="28"/>
+            </svg>
+          </span>
+          <span>
+            <div class="label">View Feed</div>
+            <div class="sub">Homework, announcements & more</div>
+          </span>
+        </button>
+        <button class="role-row" onclick="showStudentScreen('leaveScreen')">
+          <span class="emoji">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#EE6C5B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10,30 L26,14 L31,19 L15,35 L8,37 Z"/>
+            <line x1="23" y1="17" x2="28" y2="22"/>
+          </svg>
+        </span>
+          <span>
+            <div class="label">Write a Leave Letter</div>
+            <div class="sub">Let your teacher know you'll be absent</div>
+          </span>
+        </button>
+        <button class="role-row" onclick="showStudentScreen('dakScreen')">
+          <span class="emoji">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#EE6C5B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20,8 C10,8 6,15 6,21 C6,27 11,28 14,26 C16,24.5 18,26 17,28 C16,30 18,32 21,32 C30,32 34,25 34,19 C34,12 28,8 20,8 Z"/>
+            <circle cx="14" cy="17" r="1.8" fill="#EE6C5B" stroke="none"/>
+            <circle cx="21" cy="14" r="1.8" fill="#EE6C5B" stroke="none"/>
+            <circle cx="27" cy="18" r="1.8" fill="#EE6C5B" stroke="none"/>
+          </svg>
+        </span>
+          <span>
+            <div class="label">Post a DAK Activity</div>
+            <div class="sub">Share what you made or did</div>
+          </span>
+        </button>
+        <button class="signout" onclick="window.location.href='index.html'">Sign out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FEED screen ===== -->
+  <div id="studentFeedScreen" class="screen">
+    <button class="back-fixed" onclick="showStudentScreen('studentMenu')">← Back</button>
+    <div class="screen-stack">
+      <div class="card-title">Class Feed</div>
+      <div class="card">
+        <div class="filters" id="filters">
+          <button class="on" data-type="all" onclick="setFilter('all')">All</button>
+          <button data-type="homework" onclick="setFilter('homework')">Homework</button>
+          <button data-type="announcement" onclick="setFilter('announcement')">Exams</button>
+          <button data-type="holiday" onclick="setFilter('holiday')">Holidays</button>
+          <button data-type="event" onclick="setFilter('event')">Events</button>
+        </div>
+        <div id="studentFeed" class="empty-state">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LEAVE LETTER screen ===== -->
+  <div id="leaveScreen" class="screen">
+    <button class="back-fixed" onclick="showStudentScreen('studentMenu')">← Back</button>
+    <div class="screen-stack">
+      <div class="card-title">Write a Leave Letter</div>
+      <div class="card">
+        <label>Your name</label>
+        <input type="text" id="leaveName" placeholder="Your name">
+        <label>Letter</label>
+        <textarea id="leaveContent" placeholder="Dear teacher, I will be absent on..."></textarea>
+        <div id="leaveErr" style="font-size:12px; margin-top:6px; text-align:left;"></div>
+        <button class="primary" onclick="submitLeave()">Submit letter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DAK ACTIVITY screen ===== -->
+  <div id="dakScreen" class="screen">
+    <button class="back-fixed" onclick="showStudentScreen('studentMenu')">← Back</button>
+    <div class="screen-stack">
+      <div class="card-title">Post a DAK Activity</div>
+      <div class="card">
+        <label>Your name</label>
+        <input type="text" id="dakName" placeholder="Your name">
+        <label>Description</label>
+        <textarea id="dakContent" placeholder="What did you do?"></textarea>
+        <label>Photo (optional)</label>
+        <input type="file" id="dakFile" accept="image/*">
+        <div id="dakErr" style="font-size:12px; margin-top:6px; text-align:left;"></div>
+        <button class="primary" onclick="submitDak()">Post activity</button>
+      </div>
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="db.js"></script>
+<script src="student.js"></script>
+
+</body>
+</html>
