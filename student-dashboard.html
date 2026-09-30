@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Student Dashboard — Ruskin Bond Class 5</title>
-<link rel="stylesheet" href="style.css">
-</head>
+  <link rel="stylesheet" href="css/style.css">
 <body>
 
   <!-- ===== MENU: what does the student want to do? ===== -->
@@ -55,6 +54,20 @@
             <div class="sub">Share what you made or did</div>
           </span>
         </button>
+        <!-- My Posts: lets a student edit or delete their own letters and activities -->
+        <button class="role-row" onclick="showStudentScreen('mySubmissionsScreen')">
+          <span class="emoji">
+          <svg viewBox="0 0 40 40" fill="none" stroke="#EE6C5B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6,12 L6,32 Q6,34 8,34 L32,34 Q34,34 34,32 L34,15 Q34,13 32,13 L20,13 L16,8 L8,8 Q6,8 6,10 Z"/>
+            <line x1="13" y1="23" x2="27" y2="23"/>
+            <line x1="13" y1="28" x2="22" y2="28"/>
+          </svg>
+        </span>
+          <span>
+            <div class="label">My Posts</div>
+            <div class="sub">Edit or delete what you posted</div>
+          </span>
+        </button>
         <button class="signout" onclick="window.location.href='index.html'">Sign out</button>
       </div>
     </div>
@@ -73,6 +86,8 @@
           <button data-type="holiday" onclick="setFilter('holiday')">Holidays</button>
           <button data-type="event" onclick="setFilter('event')">Events</button>
         </div>
+        <!-- Color key for homework subjects -->
+        <div class="subj-legend" id="studentLegend"></div>
         <div id="studentFeed" class="empty-state">Loading...</div>
       </div>
     </div>
@@ -112,9 +127,20 @@
     </div>
   </div>
 
+  <!-- ===== MY POSTS screen: the student's own letters + activities (edit / delete) ===== -->
+  <div id="mySubmissionsScreen" class="screen">
+    <button class="back-fixed" onclick="showStudentScreen('studentMenu')">← Back</button>
+    <div class="screen-stack">
+      <div class="card-title">My Posts</div>
+      <div class="card">
+        <div id="mySubmissionsList" class="empty-state">Loading...</div>
+      </div>
+    </div>
+  </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="db.js"></script>
-<script src="student.js"></script>
+<script src="js/db.js"></script>
+<script src="js/student.js"></script>
 
 </body>
 </html>

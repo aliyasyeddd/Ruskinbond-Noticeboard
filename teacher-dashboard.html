@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Teacher Dashboard — Ruskin Bond Class 5</title>
-<link rel="stylesheet" href="style.css">
-</head>
+  <link rel="stylesheet" href="css/style.css">
 <body>
 
   <!-- ===== MENU: what does the teacher want to do? ===== -->
@@ -45,7 +44,7 @@
           </span>
           <span>
             <div class="label">View Feed</div>
-            <div class="sub">See everything posted so far</div>
+            <div class="sub">See what all teachers have posted</div>
           </span>
         </button>
         <button class="role-row" onclick="showTeacherScreen('submissionsScreen')">
@@ -72,12 +71,25 @@
       <div class="card-title">Post something</div>
       <div class="card">
         <label>Type</label>
-        <select id="postType">
+        <select id="postType" onchange="toggleHomeworkSubject()">
+          <option value="" disabled selected>Select a type...</option>
           <option value="homework">Homework</option>
           <option value="announcement">Exam Announcement</option>
           <option value="holiday">Holiday</option>
           <option value="event">Event</option>
         </select>
+        <!-- Subject picker: only shown when the type is Homework -->
+        <div id="homeworkSubjectWrap" style="display:none;">
+          <label>Subject</label>
+          <select id="postSubject">
+            <option value="TEL">Telugu</option>
+            <option value="HIN">Hindi</option>
+            <option value="ENG">English</option>
+            <option value="MAT">Maths</option>
+            <option value="EVS">EVS</option>
+            <option value="COM">Computer</option>
+          </select>
+        </div>
         <label>Message</label>
         <textarea id="postContent" placeholder="Details for students..."></textarea>
         <label>Attach file (optional)</label>
@@ -100,12 +112,23 @@
     </div>
   </div>
 
-  <!-- ===== FEED screen ===== -->
+  <!-- ===== FEED screen: posts from ALL teachers in the class ===== -->
   <div id="teacherFeedScreen" class="screen">
     <button class="back-fixed" onclick="showTeacherScreen('teacherMenu')">← Back</button>
     <div class="screen-stack">
-      <div class="card-title">Your recent posts</div>
+      <div class="card-title">Class Feed</div>
       <div class="card">
+        <!-- Filter chips: "My posts" shows only this teacher's own subject -->
+        <div class="filters" id="teacherFilters">
+          <button class="on" data-type="all" onclick="setTeacherFilter('all')">All</button>
+          <button data-type="homework" onclick="setTeacherFilter('homework')">Homework</button>
+          <button data-type="announcement" onclick="setTeacherFilter('announcement')">Exams</button>
+          <button data-type="holiday" onclick="setTeacherFilter('holiday')">Holidays</button>
+          <button data-type="event" onclick="setTeacherFilter('event')">Events</button>
+          <button data-type="mine" onclick="setTeacherFilter('mine')">My posts</button>
+        </div>
+        <!-- Color key for homework subjects -->
+        <div class="subj-legend" id="teacherLegend"></div>
         <div id="teacherFeed" class="empty-state">Loading...</div>
       </div>
     </div>
@@ -133,8 +156,8 @@
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="db.js"></script>
-<script src="teacher.js"></script>
+<script src="js/db.js"></script>
+<script src="js/teacher.js"></script>
 
 </body>
 </html>

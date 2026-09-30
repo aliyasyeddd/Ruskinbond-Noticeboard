@@ -15,8 +15,8 @@ function showStudent()    { showScreen('studentScreen'); }
 
 // Called by the "Continue" buttons on the code-entry screens. Checks
 // the code is the right length, then sends the code along in the URL
-// so teacher.html / student.html know which class (and subject, or
-// roll number) to show.
+// so teacher-dashboard.html / student-dashboard.html know which class
+// (and subject, or roll number) to show.
 async function continueAsTeacher() {
   var code = document.getElementById('teacherCodeInput').value.trim().toUpperCase();
   if (code.length !== 9) {
@@ -32,7 +32,7 @@ async function continueAsTeacher() {
     showToast("You have entered the wrong code. Please enter the code correctly.");
     return;
   }
-  window.location.href = 'teacher.html?code=' + code;
+  window.location.href = 'teacher-dashboard.html?code=' + code;
 }
 async function continueAsStudent() {
   var code = document.getElementById('studentCodeInput').value.trim().toUpperCase();
@@ -49,5 +49,5 @@ async function continueAsStudent() {
     showToast("You have entered the wrong code. Please enter the code correctly.");
     return;
   }
-  window.location.href = 'student.html?code=' + code;
+  window.location.href = 'student-dashboard.html?code=' + code;
 }
