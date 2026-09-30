@@ -29,7 +29,7 @@ async function continueAsTeacher() {
     return;
   }
   if (!data) {
-    showToast("That code wasn't found. Please check it and try again.");
+    showToast("You have entered the wrong code. Please enter the code correctly.");
     return;
   }
   window.location.href = 'teacher.html?code=' + code;
@@ -46,7 +46,7 @@ async function continueAsStudent() {
     return;
   }
   if (!data) {
-    showToast("That code wasn't found. Please check it and try again.");
+    showToast("You have entered the wrong code. Please enter the code correctly.");
     return;
   }
   window.location.href = 'student.html?code=' + code;

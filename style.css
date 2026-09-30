@@ -1,108 +1,164 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap');
+/* ===== Fonts ===== */
+/* Gochi Hand = headings/buttons, Patrick Hand = body text */
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Patrick+Hand&display=swap');
 
+/* Include padding and border in every element's width/height */
 * { box-sizing: border-box; }
+
+/* ===== Design tokens (colors, shapes, shadows) ===== */
 :root {
-  --cream: #FFF6EC;
-  --coral: #EE6C5B;
-  --coral-light: #FBEAE6;
-  --ink: #2B1B14;
-  --muted: #8A776E;
+  --paper:  #FFF9EA;          /* page background */
+  --cream:  #FFF3D6;          /* kept because inline styles in the HTML use it */
+  --ink:    #3B2A40;          /* main text and outline color */
+  --muted:  #8D7A8F;          /* secondary/helper text */
+  --pink:   #F2669E;          /* primary accent */
+  --coral:  #F2669E;          /* alias of --pink, used by inline styles in the JS */
+  --coral-light: #FFE0EC;     /* light pink, used by inline styles and feed cards */
+  --aqua:   #3FBFB5;          /* secondary accent */
+  --aqua-light: #D6F3EF;      /* light aqua backgrounds */
+  --sun:    #FFD45C;          /* yellow accent (badges, back button) */
+  --sun-light: #FFF0BF;       /* light yellow backgrounds */
+  --orange: #FF8A4C;          /* spare accent, not used yet */
+  --wobble: 255px 18px 225px 18px / 18px 225px 18px 255px;  /* uneven corners for large cards */
+  --wobble-sm: 14px 10px 16px 10px / 10px 16px 10px 14px;   /* uneven corners for buttons/inputs */
+  --hard: 4px 4px 0 var(--ink);                             /* solid offset shadow, no blur */
 }
+
+/* ===== Page body: centers content and sets the default font and background ===== */
 body {
   margin: 0;
-  background-color: var(--cream);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cg fill='none' stroke='rgba(238,108,93,0.10)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='translate(15,20) rotate(35)'%3E%3Crect x='0' y='0' width='46' height='9' rx='2'/%3E%3Cpolygon points='46,0 56,4.5 46,9' fill='rgba(238,108,93,0.10)' stroke='none'/%3E%3Cline x1='40' y1='0' x2='40' y2='9'/%3E%3C/g%3E%3Cg transform='translate(120,30) rotate(-8)'%3E%3Crect x='0' y='0' width='60' height='14' rx='2'/%3E%3Cline x1='10' y1='0' x2='10' y2='6'/%3E%3Cline x1='20' y1='0' x2='20' y2='9'/%3E%3Cline x1='30' y1='0' x2='30' y2='6'/%3E%3Cline x1='40' y1='0' x2='40' y2='9'/%3E%3Cline x1='50' y1='0' x2='50' y2='6'/%3E%3C/g%3E%3Cg transform='translate(30,120)'%3E%3Cpath d='M0,4 C9,-4 18,-4 27,4 L27,20 C18,12 9,12 0,20 Z'/%3E%3Cpath d='M27,4 C36,-4 45,-4 54,4 L54,20 C45,12 36,12 27,20 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  font-family: -apple-system, "Segoe UI", sans-serif;
+  min-height: 100vh;
+  padding: 24px 20px 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  min-height: 100vh;
+  font-family: 'Patrick Hand', 'Comic Sans MS', 'Segoe UI', sans-serif;
+  font-size: 17px;
+  color: var(--ink);
+  background-color: var(--paper);
+  /* two offset dot layers make the repeating polka-dot pattern */
+  background-image:
+    radial-gradient(circle, rgba(63,191,181,0.22) 5px, transparent 6px),
+    radial-gradient(circle, rgba(242,102,158,0.18) 4px, transparent 5px);
+  background-size: 54px 54px, 54px 54px;
+  background-position: 0 0, 27px 27px;
 }
 
-
+/* ===== Card: the main white container used on every screen ===== */
 .card {
-  position: relative;
+  position: relative;          /* anchor for the ::before / ::after decorations */
   max-width: 400px;
   width: 100%;
   background: #fff;
-  border-radius: 4px 4px 22px 22px;
-  padding: 34px 24px 30px;
-  box-shadow: 0 10px 28px rgba(43,27,20,0.10);
+  border: 3px solid var(--ink);
+  border-radius: var(--wobble);
+  padding: 38px 26px 30px;
+  /* first shadow = aqua offset block, second = ink outline around it */
+  box-shadow: 6px 6px 0 var(--aqua), 6px 6px 0 3px var(--ink);
   text-align: center;
-  clip-path: polygon(
-    0% 10px, 4% 0%, 9% 8px, 14% 0%, 19% 8px, 24% 0%, 29% 8px, 34% 0%,
-    39% 8px, 44% 0%, 49% 8px, 54% 0%, 59% 8px, 64% 0%, 69% 8px, 74% 0%,
-    79% 8px, 84% 0%, 89% 8px, 94% 0%, 100% 10px,
-    100% 100%, 0% 100%
-  );
 }
+
+/* Dashed line drawn just inside the card edge */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 2px dashed rgba(242,102,158,0.55);
+  border-radius: var(--wobble);
+  pointer-events: none;        /* so it never blocks clicks on the card */
+}
+
+/* Striped tape strip stuck across the top of the card */
 .card::before {
   content: "";
   position: absolute;
-  top: -8px; left: 26px;
-  width: 34px; height: 16px;
-  background: var(--coral-light);
-  opacity: 0.9;
-  transform: rotate(-6deg);
-  border-radius: 2px;
+  top: -14px; left: 50%;
+  width: 96px; height: 26px;
+  margin-left: -48px;          /* half the width, to center it */
+  background: repeating-linear-gradient(45deg,
+    rgba(255,212,92,0.92) 0 8px, rgba(255,240,191,0.92) 8px 16px);
+  transform: rotate(-3deg);
+  border-left: 2px dotted rgba(59,42,64,0.35);
+  border-right: 2px dotted rgba(59,42,64,0.35);
+  z-index: 2;
 }
+
+/* Heading inside a card */
 .card h1 {
-  font-family: 'Baloo 2', -apple-system, sans-serif;
+  font-family: 'Gochi Hand', 'Comic Sans MS', cursive;
   color: var(--ink);
-  font-size: 23px;
-  font-weight: 700;
-  margin: 0 0 6px;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 8px;
 }
+
+/* Short description paragraph directly under the card heading */
 .card > p {
   color: var(--muted);
-  font-size: 14px;
-  margin-bottom: 22px;
+  font-size: 16px;
+  margin: 0 0 22px;
 }
+
+/* ===== Badge: small pill label (e.g. "TEACHER", subject name) ===== */
 .badge {
   display: inline-block;
-  background: var(--coral-light);
-  color: var(--coral);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  padding: 5px 14px;
-  border-radius: 20px;
-  margin-bottom: 16px;
+  background: var(--sun);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  font-family: 'Gochi Hand', cursive;
+  font-size: 15px;
+  letter-spacing: 1px;
+  padding: 3px 16px;
+  border-radius: 999px;        /* fully rounded ends */
+  margin-bottom: 14px;
+  transform: rotate(-2deg);
+  box-shadow: 2px 2px 0 var(--ink);
 }
 
-/* ---- Back button floats fixed at the very top-left of the screen,
-   independent of the card ---- */
+/* ===== Back button: fixed to the top-left corner of the screen ===== */
 .back-fixed {
   position: fixed;
-  top: 20px;
-  left: 20px;
-  border-radius: 20px;
-  background: #fff;
-  border: none;
-  box-shadow: 0 4px 14px rgba(43,27,20,0.08);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--coral);
-  cursor: pointer;
-  padding: 9px 16px 9px 12px;
-  z-index: 5;
-}
-/* ---- Screen title sitting directly above the card, centered with it ---- */
-.card-title {
-  text-align: center;
-  font-family: 'Baloo 2', -apple-system, sans-serif;
-  font-weight: 700;
+  top: 18px; left: 18px;
+  z-index: 5;                  /* stay above the card */
+  background: var(--sun);
   color: var(--ink);
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: 'Gochi Hand', cursive;
   font-size: 17px;
-  margin-bottom: 14px;
+  padding: 6px 16px 6px 12px;
+  cursor: pointer;
+  transform: rotate(-2deg);
+  transition: transform .12s ease, box-shadow .12s ease;
 }
+.back-fixed:hover  { transform: rotate(0) translateY(-2px); box-shadow: 3px 5px 0 var(--ink); }  /* lifts up */
+.back-fixed:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }          /* pressed down */
 
-/* ---- Title-only bar used on dashboard screens (no back button) ---- */
-.topbar { text-align: center; margin-bottom: 14px; }
-.topbar .title { font-family: 'Baloo 2', -apple-system, sans-serif; color: var(--ink); font-weight: 700; font-size: 17px; }
+/* ===== Screen titles: label sitting above the card ===== */
+/* .card-title is used on sub-screens, .topbar .title on the dashboard menus */
+.card-title, .topbar .title {
+  display: inline-block;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 24px;
+  background: var(--pink);
+  color: #fff;
+  border: 2.5px solid var(--ink);
+  border-radius: var(--wobble-sm);
+  padding: 4px 20px 6px;
+  margin-bottom: 22px;
+  box-shadow: var(--hard);
+  transform: rotate(-1.5deg);
+  text-shadow: 1px 1px 0 rgba(59,42,64,0.35);   /* keeps white text readable */
+}
+.card-title { text-align: center; }
+/* Wrapper for the title on dashboard menu screens */
+.topbar { text-align: center; margin-bottom: 0; }
+/* Dashboard title is slightly smaller and aqua to set it apart */
+.topbar .title { font-size: 20px; background: var(--aqua); }
 
-/* ---- Wrapper so topbar/title + card stack and stay centered together ---- */
+/* ===== Screen stack: keeps the title and card centered together ===== */
 .screen-stack {
   max-width: 400px;
   width: 100%;
@@ -111,236 +167,381 @@ body {
   align-items: center;
 }
 
-/* ================= ROLE SELECT SCREEN =================
-   Full-bleed coral like the landing screen, no white card —
-   the two role rows float directly on the color. */
-#roleSelectScreen.active {
-  position: fixed;
-  inset: 0;
-  background: #EE6C5B;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  z-index: 10;
-}
-#roleSelectScreen .welcome-inner h1 { color: #FFF6EC; }
-#roleSelectScreen .welcome-inner p { margin-bottom: 26px; }
-#roleSelectScreen .role-row { background: #FFF6EC; }
-#roleSelectScreen .role-row .emoji { background: var(--coral-light); }
-#roleSelectScreen .role-row svg { width: 24px; height: 24px; }
+/* ===== Role rows: large menu buttons with an icon and two lines of text ===== */
 .role-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 14px;                   /* space between icon and text */
   width: 100%;
-  background: var(--coral-light);
-  border: none;
-  border-radius: 16px;
-  padding: 14px 16px;
-  margin-top: 12px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--aqua-light);
+  color: var(--ink);
+  border: 2.5px solid var(--ink);
+  border-radius: var(--wobble-sm);
+  box-shadow: var(--hard);
   text-align: left;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  font-family: inherit;
+  transition: transform .12s ease, box-shadow .12s ease;
 }
-.role-row:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(238,108,93,0.2); }
+/* Alternate background colors so stacked rows are easy to tell apart */
+.role-row:nth-of-type(even) { background: var(--sun-light); }
+.role-row:nth-of-type(3n)   { background: var(--coral-light); }
+.role-row:hover  { transform: translate(-2px,-2px) rotate(-0.6deg); box-shadow: 6px 6px 0 var(--ink); }  /* lifts up */
+.role-row:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }                   /* pressed down */
+
+/* Round icon holder on the left of a role row */
 .role-row .emoji {
-  width: 44px; height: 44px;
-  border-radius: 12px;
-  background: #fff;
+  width: 48px; height: 48px;
+  flex-shrink: 0;              /* don't squash the icon on narrow screens */
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
+  background: #fff;
+  border: 2.5px solid var(--ink);
+  border-radius: 50%;
 }
-.role-row .label { font-family: 'Baloo 2', -apple-system, sans-serif; font-weight: 700; color: var(--ink); font-size: 15px; }
-.role-row .sub { color: var(--muted); font-size: 12px; }
+.role-row .emoji svg { width: 28px; height: 28px; }
+/* Main line of text in a role row */
+.role-row .label { font-family: 'Gochi Hand', cursive; font-size: 20px; color: var(--ink); line-height: 1.1; }
+/* Smaller description line under the label */
+.role-row .sub { color: var(--muted); font-size: 14px; }
 
-/* ---- Generic coral primary button + text input, used inside cards ---- */
+/* ===== SVG icon recolor ===== */
+/* The icons in the HTML hard-code the old coral colors; these rules override them
+   without editing every SVG. */
+svg [stroke="#EE6C5B"] { stroke: var(--ink); }   /* outlines */
+svg [fill="#EE6C5B"]   { fill: var(--pink); }    /* solid dots */
+svg [fill="#FBEAE6"]   { fill: var(--sun); }     /* light inner fills */
+.badge svg [stroke="#EE6C5B"] { stroke: var(--ink); }   /* small icon inside the badge */
+
+/* ===== Primary button and text input: shared full width inside cards ===== */
 .card button.primary, .card input[type="text"] { width: 100%; }
-.card button.primary {
-  background: var(--coral);
-  color: #fff;
-  border: none;
-  border-radius: 14px;
-  padding: 14px;
-  font-family: 'Baloo 2', -apple-system, sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 6px;
-  box-shadow: 0 4px 12px rgba(238,108,93,0.28);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.card button.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(238,108,93,0.32); }
-.card input[type="text"] {
-  border: 1.5px solid #F0E4DC;
-  background: var(--cream);
-  border-radius: 12px;
-  padding: 13px 14px;
-  font-size: 15px;
-  color: var(--ink);
-  margin-bottom: 14px;
-  text-align: center;
-  letter-spacing: 1px;
-}
-.card input[type="text"]:focus { outline: 2px solid var(--coral); border-color: var(--coral); }
 
-/* ---- Form fields inside dashboards: labels, select, textarea ---- */
+/* Main action button (Continue, Post, Submit...) */
+.card button.primary {
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--pink);
+  color: #fff;
+  border: 2.5px solid var(--ink);
+  border-radius: var(--wobble-sm);
+  box-shadow: var(--hard);
+  font-family: 'Gochi Hand', cursive;
+  font-size: 21px;
+  letter-spacing: .5px;
+  text-shadow: 1px 1px 0 rgba(59,42,64,.35);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.card button.primary:hover  { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }  /* lifts up */
+.card button.primary:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }    /* pressed down */
+
+/* Single-line text input (code entry fields) */
+.card input[type="text"] {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2.5px dashed var(--ink);
+  border-radius: var(--wobble-sm);
+  font-family: 'Gochi Hand', cursive;
+  font-size: 20px;
+  letter-spacing: 3px;         /* spreads out the code characters */
+  text-align: center;
+}
+.card input[type="text"]::placeholder { color: rgba(141,122,143,.6); letter-spacing: 1px; }
+
+/* Focus state shared by text inputs, dropdowns and textareas */
+.card input[type="text"]:focus,
+.card select:focus, .card textarea:focus {
+  outline: none;
+  border-style: solid;
+  border-color: var(--aqua);
+  box-shadow: 0 0 0 3px var(--aqua-light);   /* soft focus ring */
+}
+
+/* Field labels above inputs on the forms */
 .card label {
   display: block;
   text-align: left;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--muted);
-  letter-spacing: 0.3px;
-  margin: 14px 0 6px;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 17px;
+  color: var(--pink);
+  margin: 14px 0 5px;
 }
+
+/* Dropdown, multi-line textarea and file picker share the same box style */
 .card select, .card textarea, .card input[type="file"] {
   width: 100%;
-  border: 1.5px solid #F0E4DC;
-  background: var(--cream);
-  border-radius: 12px;
-  padding: 12px 14px;
-  font-size: 14px;
+  padding: 11px 14px;
+  background: var(--paper);
   color: var(--ink);
+  border: 2.5px dashed var(--ink);
+  border-radius: var(--wobble-sm);
   font-family: inherit;
+  font-size: 16px;
 }
-.card textarea { min-height: 80px; resize: vertical; }
+.card textarea { min-height: 90px; resize: vertical; }
 
-/* ---- Horizontal filter chips (student feed) ---- */
+/* ===== Feed filter chips (All / Homework / Exams / ...) ===== */
+/* Scrolls sideways if the chips don't fit on a small screen */
 .filters {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 4px;
-  margin: 4px 0 16px;
+  padding: 4px 4px 10px;
+  margin: 0 -4px 12px;
 }
 .filters button {
-  flex-shrink: 0;
-  padding: 8px 14px;
-  border-radius: 20px;
-  border: 1.5px solid var(--coral-light);
+  flex-shrink: 0;              /* keep each chip on one line */
+  padding: 4px 14px;
   background: #fff;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 600;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 16px;
   cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: transform .12s ease;
 }
-.filters button.on { background: var(--coral); color: #fff; border-color: var(--coral); }
+.filters button:hover { transform: rotate(-2deg) translateY(-1px); }
+/* Currently selected filter */
+.filters button.on { background: var(--aqua); color: #fff; text-shadow: 1px 1px 0 rgba(59,42,64,.35); transform: rotate(-2deg); }
 
-/* ---- Feed post preview + empty state ---- */
+/* ===== Feed items: one post or submission in a list ===== */
 .post-item {
-  border-left: 4px solid var(--coral);
-  background: var(--coral-light);
-  border-radius: 0 14px 14px 0;
-  padding: 12px 14px;
-  margin-bottom: 10px;
+  position: relative;          /* anchor for the pin ::before */
+  margin: 18px 2px 16px;
+  padding: 16px 14px 12px;
+  background: var(--sun-light);
+  border: 2px solid var(--ink);
+  border-radius: 4px 14px 6px 14px;
+  box-shadow: 3px 3px 0 rgba(59,42,64,.85);
   text-align: left;
+  line-height: 1.35;
+  transform: rotate(-0.6deg);
 }
-.post-item .type {
-  font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
-  color: var(--coral); font-weight: 800; margin-bottom: 2px;
-}
-.empty-state { color: var(--muted); font-size: 13px; padding: 18px 0; }
+/* Vary color and tilt so a long list doesn't look repetitive */
+.post-item:nth-child(even) { background: var(--aqua-light); transform: rotate(0.7deg); }
+.post-item:nth-child(3n)   { background: var(--coral-light); transform: rotate(-0.3deg); }
 
-/* ---- Section divider heading inside a dashboard card stack ---- */
+/* Round pin dot at the top center of each feed item */
+.post-item::before {
+  content: "";
+  position: absolute;
+  top: -8px; left: 50%;
+  width: 14px; height: 14px;
+  margin-left: -7px;
+  background: var(--pink);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: inset -2px -2px 0 rgba(59,42,64,.25);
+}
+
+/* Small uppercase label at the top of an item (post type / student name) */
+.post-item .type {
+  display: inline-block;
+  margin-bottom: 4px;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--pink);
+}
+
+/* "View attachment" / "View photo" links */
+.post-item a { text-decoration: none; }
+.post-item a:hover { text-decoration: underline wavy; }
+
+/* Placeholder text while loading or when a list is empty */
+.empty-state { color: var(--muted); font-size: 16px; padding: 16px 0; }
+
+/* ===== Section heading inside a card (e.g. "Leave Letters", "DAK Activities") ===== */
 .section-title {
   text-align: left;
-  font-family: 'Baloo 2', -apple-system, sans-serif;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 21px;
   color: var(--ink);
-  font-size: 15px;
-  font-weight: 800;
-  margin: 22px 0 2px;
-}
-.signout {
-  background: none; border: none; color: var(--muted);
-  font-size: 13px; text-decoration: underline; cursor: pointer;
-  margin-top: 16px;
+  margin: 24px 0 4px;
+  border-bottom: 2.5px dotted var(--pink);
+  padding-bottom: 3px;
 }
 
-/* ---- Themed toast notification, replaces native browser alert() ----
-   Centered on screen with a dimmed backdrop, like a small modal. */
+/* ===== Sign out: plain text-style link button at the bottom of menus ===== */
+.signout {
+  margin-top: 18px;
+  background: none; border: none;
+  color: var(--muted);
+  font-family: 'Gochi Hand', cursive;
+  font-size: 16px;
+  text-decoration: underline wavy var(--pink);
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.signout:hover { color: var(--pink); }
+
+/* ===== Toast: pop-up message that replaces the browser alert() ===== */
+/* Dimmed overlay behind the toast; fades in and out */
 .toast-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(43,27,20,0.35);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
+  position: fixed; inset: 0;
+  background: rgba(59,42,64,.4);
+  opacity: 0; pointer-events: none;     /* hidden and non-clickable until .show is added */
+  transition: opacity .25s ease;
   z-index: 49;
 }
 .toast-backdrop.show { opacity: 1; pointer-events: auto; }
+
+/* The message box itself, centered on screen */
 .toast {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
-  max-width: 340px;
-  width: calc(100% - 60px);
-  background: #fff;
-  border: 2px solid var(--coral-light);
-  border-top: 6px solid var(--coral);
-  border-radius: 18px;
-  padding: 22px 20px;
-  box-shadow: 0 20px 48px rgba(43,27,20,0.25);
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%,-50%) scale(.85) rotate(-2deg);   /* starts small, grows when shown */
+  width: calc(100% - 60px); max-width: 340px;
+  padding: 24px 20px 22px;
+  background: var(--sun-light);
+  border: 3px solid var(--ink);
+  border-radius: var(--wobble-sm);
+  box-shadow: 6px 6px 0 var(--pink), 6px 6px 0 3px var(--ink);
   text-align: center;
-  font-family: 'Baloo 2', -apple-system, sans-serif;
-  font-weight: 600;
-  font-size: 15px;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 20px;
+  line-height: 1.25;
   color: var(--ink);
   opacity: 0;
-  z-index: 50;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;        /* hidden toast must not block clicks on the page */
+  z-index: 50;                 /* above the backdrop */
+  transition: opacity .25s ease, transform .25s cubic-bezier(.3,1.6,.5,1);   /* slight bounce on entry */
 }
-.toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.toast.show { opacity: 1; pointer-events: auto; transform: translate(-50%,-50%) scale(1) rotate(-1.5deg); }
 
-/* ================= WELCOME / LANDING SCREEN =================
-   This screen breaks from the shared .card look on purpose — it's
-   the "cover" of the app, full-bleed color + a mascot. */
-#welcomeScreen.active {
-  position: fixed;
-  inset: 0;
-  background: #EE6C5B;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Message text inside the toast */
+.toast-text { margin-bottom: 18px; }
+
+/* Close button at the bottom of the toast */
+.toast-close {
+  padding: 8px 28px;
+  background: var(--pink);
+  color: #fff;
+  border: 2.5px solid var(--ink);
+  border-radius: var(--wobble-sm);
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: 'Gochi Hand', cursive;
+  font-size: 18px;
+  text-shadow: 1px 1px 0 rgba(59,42,64,.35);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.toast-close:hover  { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }  /* lifts up */
+.toast-close:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }    /* pressed down */
+
+/* ===== Full-screen views: welcome and role-select (index.html) ===== */
+/* Both cover the whole viewport and center their content */
+#welcomeScreen.active,
+#roleSelectScreen.active {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
   padding: 24px;
   z-index: 10;
+  overflow-y: auto;            /* allow scrolling on very short screens */
 }
+
+/* Welcome screen background: aqua with dots */
+#welcomeScreen.active {
+  background-color: var(--aqua);
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.28) 6px, transparent 7px),
+    radial-gradient(circle, rgba(255,212,92,.35) 4px, transparent 5px);
+  background-size: 56px 56px;
+  background-position: 0 0, 28px 28px;
+}
+
+/* Role-select screen background: pink with dots */
+#roleSelectScreen.active {
+  background-color: var(--pink);
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.26) 6px, transparent 7px),
+    radial-gradient(circle, rgba(255,212,92,.4) 4px, transparent 5px);
+  background-size: 56px 56px;
+  background-position: 0 0, 28px 28px;
+}
+
+/* Content column inside the welcome and role-select screens */
 .welcome-inner { max-width: 380px; width: 100%; text-align: center; }
 .welcome-inner svg { width: 180px; height: auto; margin-bottom: 6px; }
-.welcome-inner .wordmark {
-  color: #FFF6EC;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 3px;
-  margin-bottom: 26px;
-}
-.welcome-inner h1 {
-  color: #FFF6EC;
-  font-size: 30px;
-  line-height: 1.25;
-  margin: 0 0 12px;
-}
-.welcome-inner p {
-  color: rgba(255,246,236,0.85);
-  font-size: 14px;
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-.welcome-inner button {
-  background: #FFF6EC;
-  color: #EE6C5B;
-  border: none;
-  border-radius: 14px;
-  padding: 15px 28px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  width: 100%;
-}
-.welcome-inner button:hover { opacity: 0.92; }
 
-/* ---- Screens are hidden by default; JS toggles this class (index.html only) ---- */
+/* Mascot image floats up and down slowly */
+.welcome-inner img { animation: bob 3.2s ease-in-out infinite; }
+@keyframes bob {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50%     { transform: translateY(-8px) rotate(2deg); }
+}
+
+/* Small "RUSKIN BOND · CLASS 5" label above the headline */
+.welcome-inner .wordmark {
+  display: inline-block;
+  margin-bottom: 22px;
+  padding: 4px 18px;
+  background: var(--sun);
+  color: var(--ink);
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: 'Gochi Hand', cursive;
+  font-size: 17px;
+  letter-spacing: 3px;
+  transform: rotate(-2deg);
+}
+
+/* Big headline on the colored screens */
+.welcome-inner h1 {
+  margin: 0 0 12px;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: 3px 3px 0 var(--ink);   /* keeps white text readable on color */
+}
+
+/* Supporting sentence under the headline */
+.welcome-inner p {
+  margin: 0 0 28px;
+  font-size: 18px;
+  line-height: 1.45;
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(59,42,64,.6);
+}
+
+/* "Let's go" button (excludes the role-row buttons on the next screen) */
+.welcome-inner > button:not(.role-row) {
+  width: 100%;
+  padding: 13px 28px;
+  background: var(--sun);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: var(--wobble-sm);
+  box-shadow: 5px 5px 0 var(--ink);
+  font-family: 'Gochi Hand', cursive;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.welcome-inner > button:not(.role-row):hover  { transform: translate(-2px,-2px) rotate(-1deg); box-shadow: 7px 7px 0 var(--ink); }  /* lifts up */
+.welcome-inner > button:not(.role-row):active { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }                 /* pressed down */
+
+/* Role-select overrides: tweaks so the rows and headline read well on the pink background */
+#roleSelectScreen .welcome-inner .badge { background: var(--sun); }
+#roleSelectScreen .welcome-inner h1 { color: #fff; }
+#roleSelectScreen .role-row { background: #fff; }
+#roleSelectScreen .role-row:nth-of-type(even) { background: var(--sun-light); }
+#roleSelectScreen .role-row .emoji { background: var(--aqua-light); }
+
+/* ===== Screen switching: JS adds/removes .active to show one screen at a time ===== */
 .screen { display: none; }
 .screen.active { display: block; }
+
+/* ===== Small phones (380px wide or less) ===== */
+@media (max-width: 380px) {
+  .card { padding: 34px 20px 26px; }       /* tighter card padding */
+  .welcome-inner h1 { font-size: 34px; }   /* smaller headline so it doesn't wrap too much */
+}

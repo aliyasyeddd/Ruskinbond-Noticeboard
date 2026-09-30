@@ -15,18 +15,21 @@ const SUBJECT_NAMES = {
   TEL: "Telugu", HIN: "Hindi", COM: "Computer"
 };
 
-// Shows a small themed notification centered on screen (with a dimmed
-// backdrop) instead of the browser's plain alert() popup. Fades in,
-// then auto-dismisses. Lives here (not app.js) because teacher.html
-// and student.html need it too, and both already load db.js.
-let toastTimer = null;
+// Shows a pop-up message centered on screen (with a dimmed backdrop)
+// instead of the browser's plain alert() popup. It stays open until the
+// user presses the Close button (or taps the dimmed area behind it).
+// Lives here (not app.js) because teacher.html and student.html need it
+// too, and both already load db.js.
 function showToast(message) {
   var backdrop = document.getElementById('appToastBackdrop');
   var el = document.getElementById('appToast');
+
+  // Create the backdrop and toast box the first time a message is shown.
   if (!el) {
     backdrop = document.createElement('div');
     backdrop.id = 'appToastBackdrop';
     backdrop.className = 'toast-backdrop';
+    backdrop.addEventListener('click', hideToast);   // tapping outside also closes it
     document.body.appendChild(backdrop);
 
     el = document.createElement('div');
@@ -34,14 +37,33 @@ function showToast(message) {
     el.className = 'toast';
     document.body.appendChild(el);
   }
-  el.textContent = message;
+
+  // Rebuild the contents each time: the message, then the Close button below it.
+  el.innerHTML = '';
+
+  var text = document.createElement('div');
+  text.className = 'toast-text';
+  text.textContent = message;
+
+  var closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'toast-close';
+  closeBtn.textContent = 'Close';
+  closeBtn.addEventListener('click', hideToast);
+
+  el.appendChild(text);
+  el.appendChild(closeBtn);
+
   el.classList.add('show');
   backdrop.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(function() {
-    el.classList.remove('show');
-    backdrop.classList.remove('show');
-  }, 3200);
+}
+
+// Hides the pop-up message and its dimmed backdrop.
+function hideToast() {
+  var backdrop = document.getElementById('appToastBackdrop');
+  var el = document.getElementById('appToast');
+  if (el) el.classList.remove('show');
+  if (backdrop) backdrop.classList.remove('show');
 }
 
 // Formats an ISO timestamp as "September 30 · 11:26 AM" instead of the
