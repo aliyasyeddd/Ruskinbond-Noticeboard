@@ -397,7 +397,7 @@ svg [fill="#FBEAE6"]   { fill: var(--sun); }     /* light inner fills */
 
 /* ===== Homework subject colors =====
    Each subject class sets three variables: background, pin color, label color.
-   Used on feed posts (.post-item) and on the legend chips (.subj-chip). */
+   Used on homework posts in the feeds (.post-item). */
 .subj-TEL { --subj-bg: #E8DFFA; --subj-pin: #8E6BD8; --subj-ink: #6B4BB8; }   /* Telugu: lavender */
 .subj-HIN { --subj-bg: #FFE3CF; --subj-pin: #FF8A4C; --subj-ink: #C9571A; }   /* Hindi: orange */
 .subj-ENG { --subj-bg: #FFE0EC; --subj-pin: #F2669E; --subj-ink: #D93F81; }   /* English: pink */
@@ -410,26 +410,6 @@ svg [fill="#FBEAE6"]   { fill: var(--sun); }     /* light inner fills */
 .post-item[class*="subj-"]::before { background: var(--subj-pin); }
 .post-item[class*="subj-"] .type { color: var(--subj-ink); }
 
-/* Color key shown above the feed */
-.subj-legend {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  margin: 0 0 14px;
-}
-.subj-legend-label { font-family: 'Gochi Hand', cursive; font-size: 15px; color: var(--muted); margin-right: 2px; }
-.subj-chip {
-  padding: 1px 10px;
-  background: var(--subj-bg);
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  font-family: 'Gochi Hand', cursive;
-  font-size: 14px;
-  color: var(--ink);
-}
-
 /* ===== Section heading inside a card (e.g. "Leave Letters", "DAK Activities") ===== */
 .section-title {
   text-align: left;
@@ -441,18 +421,31 @@ svg [fill="#FBEAE6"]   { fill: var(--sun); }     /* light inner fills */
   padding-bottom: 3px;
 }
 
-/* ===== Sign out: plain text-style link button at the bottom of menus ===== */
+/* ===== Sign out: pill button with an exit icon at the bottom of menus ===== */
 .signout {
-  margin-top: 18px;
-  background: none; border: none;
-  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;                    /* space between the icon and the text */
+  margin-top: 22px;
+  padding: 7px 20px 8px;
+  background: #fff;
+  color: var(--ink);
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--ink);
   font-family: 'Gochi Hand', cursive;
-  font-size: 16px;
-  text-decoration: underline wavy var(--pink);
-  text-underline-offset: 4px;
+  font-size: 17px;
   cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
 }
-.signout:hover { color: var(--pink); }
+/* Exit-door arrow icon drawn in the ink color, added in CSS so the HTML stays unchanged */
+.signout::before {
+  content: "";
+  width: 17px; height: 17px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233B2A40' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4'/%3E%3Cpath d='M16 17l5-5-5-5'/%3E%3Cpath d='M21 12H9'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.signout:hover  { background:  #FF6961; transform: translate(-1px,-1px) rotate(-1deg); box-shadow: 4px 4px 0 var(--ink); }  /* lifts up, pastel mint */
+.signout:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }                                                   /* pressed down */
 
 /* ===== Toast: pop-up message that replaces the browser alert() ===== */
 /* Dimmed overlay behind the toast; fades in and out */

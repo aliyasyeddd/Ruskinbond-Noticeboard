@@ -327,5 +327,4 @@ function renderSubmission(s) {
     '</div>';
 }
 
-renderSubjectLegend('teacherLegend');
 initTeacherPage();

@@ -19,8 +19,8 @@ const SUBJECT_NAMES = {
 // centered on screen (with a dimmed backdrop) and one button per entry in
 // `buttons` ({ label, secondary, onClick }). Pressing any button closes
 // the pop-up first, then runs that button's onClick (if it has one).
-// Lives here (not app.js) because teacher-dashboard.html and student-dashboard.html
-// need it too, and both already load db.js.
+// Lives here (not login.js) because teacher-dashboard.html and student-dashboard.html need it
+// too, and both already load shared.js.
 function openToast(message, buttons) {
   var backdrop = document.getElementById('appToastBackdrop');
   var el = document.getElementById('appToast');
@@ -128,7 +128,7 @@ async function deleteFromStorage(url) {
 
 // ===== Subject color coding for homework =====
 
-// Display order of the subjects in dropdowns and the color legend.
+// Display order of the subjects in the homework subject dropdowns.
 const SUBJECT_ORDER = ['TEL', 'HIN', 'ENG', 'MAT', 'EVS', 'COM'];
 
 // For a homework post, returns the CSS class that colors it by subject
@@ -147,15 +147,4 @@ function postColorClass(p) {
 function postTypeLabel(p) {
   var code = p.type === 'homework' ? (p.homework_subject || p.subject) : p.subject;
   return p.type + ' · ' + (SUBJECT_NAMES[code] || code);
-}
-
-// Fills the element with the given id with a small color key
-// ("Homework colors: Telugu, Hindi, English, ...").
-function renderSubjectLegend(elementId) {
-  var box = document.getElementById(elementId);
-  if (!box) return;
-  box.innerHTML = '<span class="subj-legend-label">Homework colors:</span>' +
-    SUBJECT_ORDER.map(function(code) {
-      return '<span class="subj-chip subj-' + code + '">' + SUBJECT_NAMES[code] + '</span>';
-    }).join('');
 }

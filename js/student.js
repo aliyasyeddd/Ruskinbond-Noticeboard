@@ -35,7 +35,10 @@ async function initStudentPage() {
   studentClass = classCode;
   studentRoll = roll;
   studentCode = code;
-  document.getElementById('studentTitle').textContent = "Class 5 · Ruskin Bond (" + studentClass + ")";
+  // Title shows the student's roll number as "Student - 01" (roll "001" -> "01")
+const rollNumber = parseInt(roll, 10);
+const rollLabel = isNaN(rollNumber) ? roll : String(rollNumber).padStart(2, '0');
+document.getElementById('studentTitle').textContent = "Student - " + rollLabel;
 }
 
 function setFilter(type) {
@@ -283,5 +286,4 @@ function escapeHtml(s) {
   });
 }
 
-renderSubjectLegend('studentLegend');
 initStudentPage();
